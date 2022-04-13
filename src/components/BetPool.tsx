@@ -85,6 +85,7 @@ const BetPool = () => {
   const onRollClick = () => dispatch(toggleRollDialog(true));
   const onPayoutClick = () => dispatch(togglePayouts(true));
 
+  const balance = useSelector((state: AppState) => state.network.accountBalance)
   const bets: Bet[] = useSelector((state: AppState) => state.betPool.bets);
   const betHistory: Bet[] = useSelector((state: AppState) => state.betPool.history);
   const totalBetAmount = bets.reduce((total, bet) => total + bet.amount, 0);
@@ -95,6 +96,9 @@ const BetPool = () => {
   return (
     <div className="BetPool">
       <div className="BetPool__total">
+        <div>
+          Balance: <span className="BetPool__balance">${balance.toFixed(2)}</span>
+        </div>
         <div>
           Total: <span className="BetPool__total-number">${totalBetAmount.toFixed(2)}</span>
         </div>

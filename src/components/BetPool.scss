@@ -79,6 +79,15 @@
     }
   }
 
+  &__balance {
+    text-align: left;
+
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1;
+    color: $blue-1;
+  }
+
   &__max-win {
     font-size: 13px;
     color: $gray-1;
