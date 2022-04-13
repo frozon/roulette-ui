@@ -20,6 +20,7 @@ export const networks = process.env.NODE_ENV !== 'development' ? deployedNetwork
     "network_name": "ganache",
     "bet_token_address": process.env.BET_TOKEN_ADDRESS,
     "contract_address": process.env.ROULETTE_ADDRESS,
+    "sphere_token_address": process.env.SPHERE_TOKEN_ADDRESS,
   }
 ];
 export const supportedChainIds = networks.map((network: {chain_id: number}) => network.chain_id);
@@ -58,6 +59,19 @@ export default class NetworkHelper {
     if (!contracts.get(contractHash)) {
       contracts.set(contractHash, new Contract(
         network.bet_token_address,
+        ERC20_PERMIT,
+        this.web3React.library?.getSigner(this.account || ''),
+      ));
+    }
+    return contracts.get(contractHash);
+  }
+
+  public getSphereTokenContract() {
+    const network = this.getNetwork();
+    const contractHash = `${network.sphere_token_address}-${this.account || ''}`;
+    if(!contracts.get(contractHash)) {
+      contracts.set(contractHash, new Contract(
+        network.sphere_token_address,
         ERC20_PERMIT,
         this.web3React.library?.getSigner(this.account || ''),
       ));
@@ -153,6 +167,15 @@ export default class NetworkHelper {
     // if (tokenContract.permit) {
     //   return await this.permitTokenUsage();
     // }
+
+    const tx = await tokenContract.approve(rouletteContract.address, amount);
+    await tx.wait(1);
+    return [{from: this.account}];
+  }
+
+  public async approveSphereTokenAmount(amount: BigNumber): Promise<any[]> {
+    const tokenContract = await this.getSphereTokenContract();
+    const rouletteContract = await this.getRouletteContract();
 
     const tx = await tokenContract.approve(rouletteContract.address, amount);
     await tx.wait(1);
