@@ -1,0 +1,51 @@
+@import '../variables';
+
+.CashOutFormDialog {
+  min-width: 400px;
+  padding-top: 2rem;
+
+  &__amount-power {
+    color: $gray-3;
+    font-size: 20px;
+  }
+
+  &__expected-win {
+    font-weight: 500;
+    font-size: 14px;
+    color: $gray-1;
+    padding: 10px;
+
+    &-amount {
+      margin-left: 5px;
+      color: $green-2;
+      font-size: 16px;
+    }
+  }
+
+  &__place-cash-in-button {
+    margin-top: 15px;
+  }
+
+  &__multi-button {
+    // display: flex;
+    gap: 1.2rem;
+    justify-content: space-between;
+    margin-top: 1.2rem;
+  }
+
+  &__cash-in-info {
+    margin-bottom: 20px;
+    font-size: 13px;
+
+    &__description {
+      display: inline-block;
+    }
+
+    &__multiplier {
+      display: inline-block;
+      color:$gray-3;
+      font-size: 11px;
+      margin-left: 6px;
+    }
+  }
+}
