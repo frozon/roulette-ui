@@ -15,6 +15,7 @@ type ApproveButtonProps = {
   closed: boolean,
   onSubmit: (singature: any[]) => void,
   onError: (error: string) => void,
+  approveFunc: (amount: BigNumber) => Promise<any[]>,
 };
 
 const getErrorMessage = (error: {message: string, code: number}) => {
@@ -26,7 +27,7 @@ const getErrorMessage = (error: {message: string, code: number}) => {
   }
 }
 
-const ApproveButton = ({label, amount, onSubmit, onError, closed}: ApproveButtonProps) => {
+const ApproveButton = ({label, amount, onSubmit, onError, closed, approveFunc}: ApproveButtonProps) => {
   const [signatureParams, setSignatureParams] = useState<any[]>([]);
   const [approved, setApproved] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -43,10 +44,10 @@ const ApproveButton = ({label, amount, onSubmit, onError, closed}: ApproveButton
   }, [closed]);
 
   const approve = useCallback(async () => {
-    const networkHelper = new NetworkHelper(web3React);
+    // const networkHelper = new NetworkHelper(web3React);
     setLoading(true);
     try {
-      const _signatureParams = await networkHelper.approveTokenAmount(amount);
+      const _signatureParams = await approveFunc(amount); //networkHelper.approveTokenAmount(amount);
       setSignatureParams(_signatureParams);
       setApproved(true);
       setLoading(false);
