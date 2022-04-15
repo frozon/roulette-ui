@@ -99,6 +99,7 @@ const AddLiquidityDialog = function ({opened, onClose}: {opened: boolean, onClos
           onError={animate}
           closed={!opened}
           onSubmit={addLiquidity}
+          approveFunc={networkHelper.approveTokenAmount}
         />
       </div>
     </Dialog>

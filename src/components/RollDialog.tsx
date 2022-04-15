@@ -131,6 +131,7 @@ const RollDialog = () => {
                   onError={animate}
                   onSubmit={rollBets}
                   closed={!opened}
+                  approveFunc={networkHelper.approveTokenAmount}
                 />
               </div>
             </>

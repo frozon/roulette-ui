@@ -15,7 +15,7 @@ export const networks = process.env.NODE_ENV !== 'development' ? deployedNetwork
   ...deployedNetworks,
   {
     "title": "Ganache",
-    "chain_id": 1,
+    "chain_id": 1337,
     "network_id": 1337,
     "network_name": "ganache",
     "bet_token_address": process.env.BET_TOKEN_ADDRESS,
@@ -76,6 +76,7 @@ export default class NetworkHelper {
         this.web3React.library?.getSigner(this.account || ''),
       ));
     }
+    console.log('>', contracts.get(contractHash))
     return contracts.get(contractHash);
   }
 
@@ -123,6 +124,20 @@ export default class NetworkHelper {
     const tx = roulette.removeLiquidity();
     await tx.wait(1);
     return tx;
+  }
+
+  async cashIn(amount: BigNumber, ...signature: any[]) {
+    const roulette = await this.getRouletteContract();
+    const tx = await roulette['cashIn(uint256)'](amount, ...signature);
+    await tx.wait(1);
+    return tx
+  }
+
+  async cashOut(amount: BigNumber, ...signature: any[]) {
+    const roulette = await this.getRouletteContract();
+    const tx = await roulette['cashOut(uint256)'](amount, ...signature);
+    await tx.wait(1);
+    return tx
   }
 
   async rollBets(betsForContract: BetForContract[], randomSeed: string, ...signature: any[]) {
@@ -180,6 +195,23 @@ export default class NetworkHelper {
     const tx = await tokenContract.approve(rouletteContract.address, amount);
     await tx.wait(1);
     return [{from: this.account}];
+  }
+
+  public async isSphereApproved(): Promise<any[]> {
+    const tokenContract = await this.getSphereTokenContract();
+    const rouletteContract = await this.getRouletteContract();
+    const expiry = MaxUint256.toString();
+    const nonce = (await tokenContract.nonces(this.account || '')).toString();
+
+    const data = await getPermitData({
+      chainId: this.chainId,
+      tokenContract,
+      holder: this.account || '',
+      spender: rouletteContract.address,
+      expiry,
+      nonce,
+    });
+    return [];
   }
 
   private async permitTokenUsage(): Promise<any[]> {

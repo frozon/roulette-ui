@@ -44,6 +44,7 @@ function isSupportedNetwork(web3React: Web3ReactContextInterface<Web3Provider>) 
 }
 
 function getError(error: Error | undefined) {
+  console.log(error);
   if (error) {
     if (error instanceof UnsupportedChainIdError) {
       const networksList = networks.map((network: {title: string}) => network.title).join(', ')
@@ -166,7 +167,7 @@ function ConnectWalletButton() {
       <div className={web3React.account ? 'ConnectWalletButton__balance-container' : ''}>
         {web3React.account ? (
           <div className="ConnectWalletButton__balance">
-            ${accountBalance.toFixed(2)} (DAI)
+            ${accountBalance.toFixed(2)} (cSPHERE)
           </div>
         ) : null}
         <button className={classes} onClick={() => setOpenedDialog(true)}>
