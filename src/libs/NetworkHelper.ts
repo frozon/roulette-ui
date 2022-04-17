@@ -1,5 +1,6 @@
 // @ts-ignore
-import { networks as deployedNetworks, abi as rouletteAbi } from '@sakuracasino/roulette-contract';
+//import { networks as deployedNetworks } from '@sakuracasino/roulette-contract';
+const rouletteAbi = require('../libs/roulette.json');
 import { Contract } from '@ethersproject/contracts'
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
 import { formatEther, parseEther } from '@ethersproject/units';

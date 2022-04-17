@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { formatEther } from '@ethersproject/units';
 import { Interface } from '@ethersproject/abi';
 import { BigNumber } from '@ethersproject/bignumber';
-import { abi } from '@sakuracasino/roulette-contract';
+//import { abi } from '@sakuracasino/roulette-contract';
+const abi = require('../libs/roulette.json');
 
 import Tabs from './Tabs';
 import BetBadge from './BetBadge';
