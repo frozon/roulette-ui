@@ -48,8 +48,8 @@ const RollDialog = () => {
 
   const rollBets = useCallback(async (_signatureParams) => {
     const networkHelper = new NetworkHelper(web3React);
-    const betsForContract = networkHelper.getBetsForContract(bets);
     try {
+      const betsForContract = networkHelper.getBetsForContract(bets);
       const rollTx = await networkHelper.rollBets(betsForContract, `${random32()}`, ..._signatureParams);
       setLoading(true);
       const {events} = await rollTx.wait(1);
@@ -131,7 +131,7 @@ const RollDialog = () => {
                   onError={animate}
                   onSubmit={rollBets}
                   closed={!opened}
-                  approveFunc={networkHelper.approveTokenAmount}
+                  approveFunc={networkHelper.approveTokenAmount.bind(networkHelper)}
                 />
               </div>
             </>

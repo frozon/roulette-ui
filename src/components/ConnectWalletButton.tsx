@@ -44,7 +44,6 @@ function isSupportedNetwork(web3React: Web3ReactContextInterface<Web3Provider>) 
 }
 
 function getError(error: Error | undefined) {
-  console.log(error);
   if (error) {
     if (error instanceof UnsupportedChainIdError) {
       const networksList = networks.map((network: {title: string}) => network.title).join(', ')
