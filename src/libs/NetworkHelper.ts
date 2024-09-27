@@ -1,5 +1,6 @@
 // @ts-ignore
-import { networks as deployedNetworks, abi as rouletteAbi } from '@sakuracasino/roulette-contract';
+//import { networks as deployedNetworks } from '@sakuracasino/roulette-contract';
+const rouletteAbi = require('../libs/roulette.json');
 import { Contract } from '@ethersproject/contracts'
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
 import { formatEther, parseEther } from '@ethersproject/units';
@@ -11,17 +12,33 @@ import { ERC20_PERMIT } from '../data/abis';
 import { Bet, BetForContract, Network } from '../types';
 import { getPermitData } from './permit';
 
-export const networks = process.env.NODE_ENV !== 'development' ? deployedNetworks : [
-  ...deployedNetworks,
+// export const networks = process.env.NODE_ENV !== 'development' ? deployedNetworks : [
+//   ...deployedNetworks,
+//   {
+//     "title": "Ganache",
+//     "chain_id": 1337,
+//     "network_id": 1337,
+//     "network_name": "ganache",
+//     "bet_token_address": process.env.BET_TOKEN_ADDRESS,
+//     "contract_address": process.env.ROULETTE_ADDRESS,
+//     "sphere_token_address": process.env.SPHERE_TOKEN_ADDRESS,
+//   }
+// ];
+export const networks = [
   {
-    "title": "Ganache",
-    "chain_id": 1,
-    "network_id": 1337,
-    "network_name": "ganache",
-    "bet_token_address": process.env.BET_TOKEN_ADDRESS,
-    "contract_address": process.env.ROULETTE_ADDRESS,
+    "title":"Mumbai Testnet",
+    "chain_id":80001,
+    "network_id":80001,
+    "network_name":"mumbai",
+    "bet_token_address":"0x6B79527Ab13504E22BfEc53D2D03673d745b9b47",
+    "contract_address":"0x5e95e1FFc27f84e7c689CA08aCE55DF85ae02E13",
+    "sphere_token_address":"0x7982ba39b9cDf73393f167B995e6B16E126634fD",
+    "vrf_coordinator_address":"0x3d2341ADb2D31f1c5530cDC622016af293177AE0",
+    "link_token_address":"0xb0897686c545045aFc77CF20eC7A532E3120E0F1",
+    "keyHash":"0xf86195cf7690c55907b2b611ebb7343a6f649bff128701cc542f0569e2c549da",
+    "vrf_fee":"100000000000000"
   }
-];
+]
 export const supportedChainIds = networks.map((network: {chain_id: number}) => network.chain_id);
 
 const contracts = new Map();
@@ -58,6 +75,19 @@ export default class NetworkHelper {
     if (!contracts.get(contractHash)) {
       contracts.set(contractHash, new Contract(
         network.bet_token_address,
+        ERC20_PERMIT,
+        this.web3React.library?.getSigner(this.account || ''),
+      ));
+    }
+    return contracts.get(contractHash);
+  }
+
+  public getSphereTokenContract() {
+    const network = this.getNetwork();
+    const contractHash = `${network.sphere_token_address}-${this.account || ''}`;
+    if(!contracts.get(contractHash)) {
+      contracts.set(contractHash, new Contract(
+        network.sphere_token_address,
         ERC20_PERMIT,
         this.web3React.library?.getSigner(this.account || ''),
       ));
@@ -111,9 +141,23 @@ export default class NetworkHelper {
     return tx;
   }
 
+  async cashIn(amount: BigNumber, ...signature: any[]) {
+    const roulette = await this.getRouletteContract();
+    const tx = await roulette['cashIn(uint256)'](amount, ...signature);
+    await tx.wait(1);
+    return tx
+  }
+
+  async cashOut(amount: BigNumber, ...signature: any[]) {
+    const roulette = await this.getRouletteContract();
+    const tx = await roulette['cashOut(uint256)'](amount, ...signature);
+    await tx.wait(1);
+    return tx
+  }
+
   async rollBets(betsForContract: BetForContract[], randomSeed: string, ...signature: any[]) {
     const roulette = await this.getRouletteContract();
-    const method = signature.length > 1 ? 'rollBets((uint8,uint8,uint256)[],uint256,uint256,uint256,bool,uint8,bytes32,bytes32)' : 'rollBets((uint8,uint8,uint256)[],uint256)';
+    const method = 'rollBets((uint8,uint8,uint256)[],uint256)';
     const tx = await roulette[method](betsForContract, randomSeed, ...signature);
     await tx.wait(1);
     return tx;
@@ -157,6 +201,32 @@ export default class NetworkHelper {
     const tx = await tokenContract.approve(rouletteContract.address, amount);
     await tx.wait(1);
     return [{from: this.account}];
+  }
+
+  public async approveSphereTokenAmount(amount: BigNumber): Promise<any[]> {
+    const tokenContract = await this.getSphereTokenContract();
+    const rouletteContract = await this.getRouletteContract();
+
+    const tx = await tokenContract.approve(rouletteContract.address, amount);
+    await tx.wait(1);
+    return [{from: this.account}];
+  }
+
+  public async isSphereApproved(): Promise<any[]> {
+    // const tokenContract = await this.getSphereTokenContract();
+    // const rouletteContract = await this.getRouletteContract();
+    // const expiry = MaxUint256.toString();
+    // const nonce = (await tokenContract.nonces(this.account || '')).toString();
+
+    // const data = await getPermitData({
+    //   chainId: this.chainId,
+    //   tokenContract,
+    //   holder: this.account || '',
+    //   spender: rouletteContract.address,
+    //   expiry,
+    //   nonce,
+    // });
+    return [];
   }
 
   private async permitTokenUsage(): Promise<any[]> {

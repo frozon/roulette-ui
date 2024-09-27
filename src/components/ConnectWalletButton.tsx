@@ -166,7 +166,7 @@ function ConnectWalletButton() {
       <div className={web3React.account ? 'ConnectWalletButton__balance-container' : ''}>
         {web3React.account ? (
           <div className="ConnectWalletButton__balance">
-            ${accountBalance.toFixed(2)} (DAI)
+            ${accountBalance.toFixed(2)} (cSPHERE)
           </div>
         ) : null}
         <button className={classes} onClick={() => setOpenedDialog(true)}>

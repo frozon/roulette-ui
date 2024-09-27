@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import { useSelector, useDispatch } from 'react-redux'
 import { compact } from 'lodash';
@@ -8,6 +8,8 @@ import { removeBet, toggleRollDialog, togglePayouts } from '../flux/slices/betPo
 import { Bet } from '../types.d';
 import { getBetSetPayouts } from '../libs/utils';
 import BetBadge from './BetBadge';
+
+import CashOutDialog from './CashOutDialog';
 
 import './BetPool.scss';
 import './Dice.scss';
@@ -85,6 +87,14 @@ const BetPool = () => {
   const onRollClick = () => dispatch(toggleRollDialog(true));
   const onPayoutClick = () => dispatch(togglePayouts(true));
 
+  const onCashOut = async () => {
+    setCashOutFormOpened(true);
+  }
+
+  const onCloseCashOutForm = () => setCashOutFormOpened(false);
+
+  const [cashOutFormOpened, setCashOutFormOpened] = useState(false);
+  const balance = useSelector((state: AppState) => state.network.accountBalance);
   const bets: Bet[] = useSelector((state: AppState) => state.betPool.bets);
   const betHistory: Bet[] = useSelector((state: AppState) => state.betPool.history);
   const totalBetAmount = bets.reduce((total, bet) => total + bet.amount, 0);
@@ -96,7 +106,11 @@ const BetPool = () => {
     <div className="BetPool">
       <div className="BetPool__total">
         <div>
-          Total: <span className="BetPool__total-number">${totalBetAmount.toFixed(2)}</span>
+          Balance: <span className="BetPool__balance">${balance.toFixed(2)}</span>
+          <span onClick={onCashOut}>Cash out</span>
+        </div>
+        <div>
+          Total bet value: <span className="BetPool__total-number">${totalBetAmount.toFixed(2)}</span>
         </div>
         <div className="BetPool__max-win">
           Max win:
@@ -112,6 +126,13 @@ const BetPool = () => {
       {bets.length ? <button className="BetPool__roll" onClick={maxAmountOverflow ? undefined : onRollClick} disabled={maxAmountOverflow}>
         {maxAmountOverflow ? `Max bet is $${maxBetAmount.toFixed(2)}` : <>Roll <Dice /></>}
       </button> : null}
+      <CashOutDialog
+        open={cashOutFormOpened}
+        onClose={onCloseCashOutForm}
+        onCashOut={(amount: string) => {
+          onCloseCashOutForm();
+        }}
+      />
     </div>
   );
 };

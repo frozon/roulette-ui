@@ -82,6 +82,7 @@ module.exports = {
       'process.env.BET_TOKEN_ADDRESS': JSON.stringify(process.env.BET_TOKEN_ADDRESS),
       'process.env.ROULETTE_ADDRESS': JSON.stringify(process.env.ROULETTE_ADDRESS),
       'process.env.BET_TOKEN_NAME': JSON.stringify(process.env.BET_TOKEN_NAME || 'DAI'),
+      'process.env.SPHERE_TOKEN_ADDRESS': JSON.stringify(process.env.SPHERE_TOKEN_ADDRESS || ''),
     }),
   ],
 }

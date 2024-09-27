@@ -1,0 +1,1101 @@
+[{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "_sphere_token",
+      "type": "address"
+    },
+    {
+      "internalType": "address",
+      "name": "_bet_token",
+      "type": "address"
+    },
+    {
+      "internalType": "address",
+      "name": "_vrfCoordinator",
+      "type": "address"
+    },
+    {
+      "internalType": "address",
+      "name": "_link",
+      "type": "address"
+    },
+    {
+      "internalType": "bytes32",
+      "name": "_keyHash",
+      "type": "bytes32"
+    },
+    {
+      "internalType": "uint256",
+      "name": "_fee",
+      "type": "uint256"
+    }
+  ],
+  "stateMutability": "nonpayable",
+  "type": "constructor"
+},
+{
+  "anonymous": false,
+  "inputs": [
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "amount",
+      "type": "uint256"
+    }
+  ],
+  "name": "AddLiquidity",
+  "type": "event"
+},
+{
+  "anonymous": false,
+  "inputs": [
+    {
+      "indexed": true,
+      "internalType": "address",
+      "name": "owner",
+      "type": "address"
+    },
+    {
+      "indexed": true,
+      "internalType": "address",
+      "name": "spender",
+      "type": "address"
+    },
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "value",
+      "type": "uint256"
+    }
+  ],
+  "name": "Approval",
+  "type": "event"
+},
+{
+  "anonymous": false,
+  "inputs": [
+    {
+      "indexed": false,
+      "internalType": "bytes32",
+      "name": "requestId",
+      "type": "bytes32"
+    },
+    {
+      "indexed": false,
+      "internalType": "address",
+      "name": "sender",
+      "type": "address"
+    }
+  ],
+  "name": "BetRequest",
+  "type": "event"
+},
+{
+  "anonymous": false,
+  "inputs": [
+    {
+      "indexed": false,
+      "internalType": "bytes32",
+      "name": "requestId",
+      "type": "bytes32"
+    },
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "randomResult",
+      "type": "uint256"
+    },
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "payout",
+      "type": "uint256"
+    }
+  ],
+  "name": "BetResult",
+  "type": "event"
+},
+{
+  "anonymous": false,
+  "inputs": [
+    {
+      "indexed": false,
+      "internalType": "address",
+      "name": "user",
+      "type": "address"
+    },
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "amount",
+      "type": "uint256"
+    }
+  ],
+  "name": "CashIn",
+  "type": "event"
+},
+{
+  "anonymous": false,
+  "inputs": [
+    {
+      "indexed": false,
+      "internalType": "address",
+      "name": "user",
+      "type": "address"
+    },
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "amount",
+      "type": "uint256"
+    }
+  ],
+  "name": "CashOut",
+  "type": "event"
+},
+{
+  "anonymous": false,
+  "inputs": [
+    {
+      "indexed": true,
+      "internalType": "address",
+      "name": "previousOwner",
+      "type": "address"
+    },
+    {
+      "indexed": true,
+      "internalType": "address",
+      "name": "newOwner",
+      "type": "address"
+    }
+  ],
+  "name": "OwnershipTransferred",
+  "type": "event"
+},
+{
+  "anonymous": false,
+  "inputs": [
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "amount",
+      "type": "uint256"
+    }
+  ],
+  "name": "RemoveLiquidity",
+  "type": "event"
+},
+{
+  "anonymous": false,
+  "inputs": [
+    {
+      "indexed": false,
+      "internalType": "bytes32",
+      "name": "requestId",
+      "type": "bytes32"
+    }
+  ],
+  "name": "RequestedRandomness",
+  "type": "event"
+},
+{
+  "anonymous": false,
+  "inputs": [
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "fee",
+      "type": "uint256"
+    }
+  ],
+  "name": "SetCashInFee",
+  "type": "event"
+},
+{
+  "anonymous": false,
+  "inputs": [
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "fee",
+      "type": "uint256"
+    }
+  ],
+  "name": "SetCashOutFee",
+  "type": "event"
+},
+{
+  "anonymous": false,
+  "inputs": [
+    {
+      "indexed": true,
+      "internalType": "address",
+      "name": "from",
+      "type": "address"
+    },
+    {
+      "indexed": true,
+      "internalType": "address",
+      "name": "to",
+      "type": "address"
+    },
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "value",
+      "type": "uint256"
+    }
+  ],
+  "name": "Transfer",
+  "type": "event"
+},
+{
+  "inputs": [],
+  "name": "INVALID_RESULT",
+  "outputs": [
+    {
+      "internalType": "uint8",
+      "name": "",
+      "type": "uint8"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [
+    {
+      "internalType": "uint256",
+      "name": "amount",
+      "type": "uint256"
+    }
+  ],
+  "name": "addLiquidity",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "owner",
+      "type": "address"
+    },
+    {
+      "internalType": "address",
+      "name": "spender",
+      "type": "address"
+    }
+  ],
+  "name": "allowance",
+  "outputs": [
+    {
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "spender",
+      "type": "address"
+    },
+    {
+      "internalType": "uint256",
+      "name": "amount",
+      "type": "uint256"
+    }
+  ],
+  "name": "approve",
+  "outputs": [
+    {
+      "internalType": "bool",
+      "name": "",
+      "type": "bool"
+    }
+  ],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "account",
+      "type": "address"
+    }
+  ],
+  "name": "balanceOf",
+  "outputs": [
+    {
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [],
+  "name": "betToken",
+  "outputs": [
+    {
+      "internalType": "address",
+      "name": "",
+      "type": "address"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [],
+  "name": "bet_fee",
+  "outputs": [
+    {
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [],
+  "name": "bet_token",
+  "outputs": [
+    {
+      "internalType": "address",
+      "name": "",
+      "type": "address"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [],
+  "name": "burn_fee",
+  "outputs": [
+    {
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [
+    {
+      "internalType": "uint256",
+      "name": "amount",
+      "type": "uint256"
+    }
+  ],
+  "name": "cashIn",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "uint256",
+      "name": "amount",
+      "type": "uint256"
+    }
+  ],
+  "name": "cashOut",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [],
+  "name": "collected_fees",
+  "outputs": [
+    {
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [],
+  "name": "current_liquidity",
+  "outputs": [
+    {
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [],
+  "name": "decimals",
+  "outputs": [
+    {
+      "internalType": "uint8",
+      "name": "",
+      "type": "uint8"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "spender",
+      "type": "address"
+    },
+    {
+      "internalType": "uint256",
+      "name": "subtractedValue",
+      "type": "uint256"
+    }
+  ],
+  "name": "decreaseAllowance",
+  "outputs": [
+    {
+      "internalType": "bool",
+      "name": "",
+      "type": "bool"
+    }
+  ],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [],
+  "name": "getCurrentLiquidity",
+  "outputs": [
+    {
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "spender",
+      "type": "address"
+    },
+    {
+      "internalType": "uint256",
+      "name": "addedValue",
+      "type": "uint256"
+    }
+  ],
+  "name": "increaseAllowance",
+  "outputs": [
+    {
+      "internalType": "bool",
+      "name": "",
+      "type": "bool"
+    }
+  ],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [],
+  "name": "locked_liquidity",
+  "outputs": [
+    {
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [],
+  "name": "max_bet",
+  "outputs": [
+    {
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [],
+  "name": "minLiquidityMultiplier",
+  "outputs": [
+    {
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [],
+  "name": "name",
+  "outputs": [
+    {
+      "internalType": "string",
+      "name": "",
+      "type": "string"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [],
+  "name": "owner",
+  "outputs": [
+    {
+      "internalType": "address",
+      "name": "",
+      "type": "address"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [
+    {
+      "internalType": "bytes32",
+      "name": "requestId",
+      "type": "bytes32"
+    },
+    {
+      "internalType": "uint256",
+      "name": "randomness",
+      "type": "uint256"
+    }
+  ],
+  "name": "rawFulfillRandomness",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [],
+  "name": "redeem_min_time",
+  "outputs": [
+    {
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [
+    {
+      "internalType": "uint256",
+      "name": "amount",
+      "type": "uint256"
+    }
+  ],
+  "name": "removeLiquidity",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [],
+  "name": "renounceOwnership",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "_betToken",
+      "type": "address"
+    }
+  ],
+  "name": "setBetToken",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "uint256",
+      "name": "_fee",
+      "type": "uint256"
+    }
+  ],
+  "name": "setCashInFee",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "uint256",
+      "name": "_fee",
+      "type": "uint256"
+    }
+  ],
+  "name": "setCashOutFee",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "uint256",
+      "name": "_denominator",
+      "type": "uint256"
+    }
+  ],
+  "name": "setFeeDenominator",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "_sphereToken",
+      "type": "address"
+    }
+  ],
+  "name": "setSphereToken",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [],
+  "name": "sphereToken",
+  "outputs": [
+    {
+      "internalType": "address",
+      "name": "",
+      "type": "address"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [],
+  "name": "symbol",
+  "outputs": [
+    {
+      "internalType": "string",
+      "name": "",
+      "type": "string"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [],
+  "name": "totalSupply",
+  "outputs": [
+    {
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "recipient",
+      "type": "address"
+    },
+    {
+      "internalType": "uint256",
+      "name": "amount",
+      "type": "uint256"
+    }
+  ],
+  "name": "transfer",
+  "outputs": [
+    {
+      "internalType": "bool",
+      "name": "",
+      "type": "bool"
+    }
+  ],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "sender",
+      "type": "address"
+    },
+    {
+      "internalType": "address",
+      "name": "recipient",
+      "type": "address"
+    },
+    {
+      "internalType": "uint256",
+      "name": "amount",
+      "type": "uint256"
+    }
+  ],
+  "name": "transferFrom",
+  "outputs": [
+    {
+      "internalType": "bool",
+      "name": "",
+      "type": "bool"
+    }
+  ],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "newOwner",
+      "type": "address"
+    }
+  ],
+  "name": "transferOwnership",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "_token",
+      "type": "address"
+    }
+  ],
+  "name": "withdraw",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "components": [
+        {
+          "internalType": "enum BetType",
+          "name": "betType",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint8",
+          "name": "value",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "internalType": "struct Roulette.Bet[]",
+      "name": "bets",
+      "type": "tuple[]"
+    },
+    {
+      "internalType": "uint256",
+      "name": "randomSeed",
+      "type": "uint256"
+    }
+  ],
+  "name": "rollBets",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "bytes32",
+      "name": "requestId",
+      "type": "bytes32"
+    }
+  ],
+  "name": "redeem",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "bytes32",
+      "name": "requestId",
+      "type": "bytes32"
+    }
+  ],
+  "name": "isRequestCompleted",
+  "outputs": [
+    {
+      "internalType": "bool",
+      "name": "",
+      "type": "bool"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [
+    {
+      "internalType": "bytes32",
+      "name": "requestId",
+      "type": "bytes32"
+    }
+  ],
+  "name": "requesterOf",
+  "outputs": [
+    {
+      "internalType": "address",
+      "name": "",
+      "type": "address"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [
+    {
+      "internalType": "bytes32",
+      "name": "requestId",
+      "type": "bytes32"
+    }
+  ],
+  "name": "resultOf",
+  "outputs": [
+    {
+      "internalType": "uint8",
+      "name": "",
+      "type": "uint8"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [
+    {
+      "internalType": "bytes32",
+      "name": "requestId",
+      "type": "bytes32"
+    }
+  ],
+  "name": "betsOf",
+  "outputs": [
+    {
+      "components": [
+        {
+          "internalType": "enum BetType",
+          "name": "betType",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint8",
+          "name": "value",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "internalType": "struct Roulette.Bet[]",
+      "name": "",
+      "type": "tuple[]"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [],
+  "name": "getBetFee",
+  "outputs": [
+    {
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [],
+  "name": "getMaxBet",
+  "outputs": [
+    {
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [],
+  "name": "getCollectedFees",
+  "outputs": [
+    {
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function",
+  "constant": true
+},
+{
+  "inputs": [
+    {
+      "internalType": "uint256",
+      "name": "_bet_fee",
+      "type": "uint256"
+    }
+  ],
+  "name": "setBetFee",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "uint256",
+      "name": "_max_bet",
+      "type": "uint256"
+    }
+  ],
+  "name": "setMaxBet",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "uint256",
+      "name": "_minLiquidityMultiplier",
+      "type": "uint256"
+    }
+  ],
+  "name": "setMinLiquidityMultiplier",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [],
+  "name": "withdrawFees",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "uint256",
+      "name": "_fee",
+      "type": "uint256"
+    }
+  ],
+  "name": "setVRFFee",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "uint256",
+      "name": "_fee",
+      "type": "uint256"
+    }
+  ],
+  "name": "setBurnFee",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+}]
